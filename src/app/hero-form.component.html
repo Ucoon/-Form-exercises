@@ -1,0 +1,56 @@
+<div class="container">
+  <!-- hidden 属性是布尔属性,这个段落应该被隐藏.-->
+  <div [hidden]="submitted">
+  <h1>Hero Form</h1>
+  <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+    <div class="form-group">
+      <!-- for" 属性可把 label 绑定到另外一个元素。
+      请把 "for" 属性的值设置为相关元素的 id 属性的值。-->
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" required
+       [(ngModel)]="model.name" name="name" #name="ngModel">
+      <!-- 把我们div元素的hidden属性绑定到name控件的属性，这样就可以控制“姓名”字段错误信息的可见性了。-->
+      <div [hidden]="name.valid || name.pristine"
+       class="alert alert-danger">Name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label for="alterEgo">Alter Ego</label>
+      <input type="text" class="form-control" id="alterEgo"
+       [(ngModel)]="model.alterEgo" name="alterEgo">
+    </div>
+
+    <div class="form-group">
+      <label for="power">Hero Power</label>
+      <!-- <select> 标签创建下拉列表。-->
+      <select class="form-control" id="power" required
+        [(ngModel)]="model.power" name="power" #power="ngModel">
+        <option *ngFor="let power of powers" [value]="power">{{power}}</option>
+      </select>
+    </div>
+    <!-- 但NgForm指令有form属性。这就解释了为何当heroForm.form.valid是无效时我们可以禁用提交按钮，
+     并能把整个表单控件树传给父组件的onSubmit方法。-->
+    <button type="submit" class="btn btn-success"
+    [disabled]="!heroForm.form.valid">Submit</button>
+    <button type="button" class="btn btn-default" (click)="newHero()">New Hero</button>
+  </form>
+</div>
+
+<div [hidden]="!submitted">
+  <h2>You submitted the following:</h2>
+  <div class="row">
+    <div class="col-xs-3">Name</div>
+    <div class="col-xs-9 pull-left">{{model.name}}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Alter Ego</div>
+    <div class="col-xs-9 pull-left">{{model.alterEgo}}</div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">Power</div>
+    <div class="col-xs-9 pull-left">{{model.power}}</div>
+  </div>
+  <br>
+  <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+</div>
+</div>
